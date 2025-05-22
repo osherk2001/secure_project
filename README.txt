@@ -65,6 +65,6 @@ http://localhost:3000
 • POST /forgot-password – איפוס סיסמה
 • GET /system – קבלת נתוני מערכת (דורש התחברות)
 פרטי יוצרי הפרויקט:
-יאנה סלדקוב, איתי סימון, דור מיטניק ועומרי גומל
+ינון קרני , ג'ון עשור , מוטי , ספיר , אושר קיקירוב 
 קישור ל-GIT של הפרויקט:
-https://github.com/Itay-nomis/NET_PROJ
+https://github.com/osherk2001/secure_project.git
