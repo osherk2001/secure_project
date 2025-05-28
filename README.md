@@ -64,3 +64,4 @@ http://localhost:3000
 פרטי יוצרי הפרויקט:
 גון עשור , ספיר טויג , אושר קיקירוב , ינון קרני , מוטי 
 קישור ל-GIT של הפרויקט:
+https://github.com/osherk2001/secure_project.git
