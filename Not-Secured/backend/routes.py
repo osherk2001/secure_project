@@ -116,10 +116,16 @@ async def get_user_clients(user_id: int, db=Depends(get_db)):
         cursor.execute(query)  # Unsafe query execution
         clients = cursor.fetchall()
         cursor.close()
-
-        # Generate an HTML response to display client data
         response_content = "<br>".join([f"{client[0]} - {client[1]}" for client in clients])
         return HTMLResponse(content=response_content, status_code=200)
+ # Return JSON instead of HTML
+        # return JSONResponse(
+        #     content={"clients": [{"name": client[0], "email": client[1]} for client in clients]},
+        #     status_code=200
+        # )
+        # # Generate an HTML response to display client data
+        # response_content = "<br>".join([f"{client[0]} - {client[1]}" for client in clients])
+        # return HTMLResponse(content=response_content, status_code=200)
 
     except Exception as e:
         return JSONResponse(

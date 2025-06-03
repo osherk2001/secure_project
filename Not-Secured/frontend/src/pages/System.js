@@ -17,7 +17,7 @@ function System() {
     }
 
     const newClient = { name: clientName, email: clientEmail };
-    const userId = 1; // Replace with the actual user_id if dynamic
+    const userId = 1; // Replace with actual user_id from session
 
     try {
       const response = await fetch(
@@ -35,7 +35,7 @@ function System() {
         alert(`Client ${newClient.name} added successfully!`);
         setClientName("");
         setClientEmail("");
-        fetchClients(); // Refresh the client list after adding
+        fetchClients();
       } else {
         const errorData = await response.json();
         alert(`Error: ${errorData.message || "Failed to add client."}`);
@@ -53,37 +53,33 @@ function System() {
       const response = await fetch(
         `http://localhost:5000/get_user_clients?user_id=${userId}`
       );
-      console.log("Response status:", response.status); // בדיקת סטטוס התגובה
+      console.log("Response status:", response.status);
 
       if (response.ok) {
-        const data = await response.json();
-        console.log("Fetched clients data (raw):", data); // לוג של התגובה
-        if (data.client && Array.isArray(data.client)) {
-          console.log("Setting clients (client key):", data.client);
-          setClients(data.client); // שימוש במפתח "client"
-        } else if (Array.isArray(data)) {
-          console.log("Setting clients (array response):", data);
-          setClients(data); // אם התגובה היא מערך ישיר
-        } else {
-          console.error("Unexpected data format:", data);
-          alert("Unexpected data format received from the server.");
-        }
+      
+        const text = await response.text(); // Get the response as text instead of JSON
+            console.log("Fetched clients data:", text);
+            
+            // Parse the HTML response
+            const clientList = text.split('<br>').filter(item => item.trim() !== '');
+            const parsedClients = clientList.map(item => {
+                const [name, email] = item.split(' - ');
+                return { name, email };
+            });
+            
+            setClients(parsedClients);
       } else {
-        const errorData = await response.json();
-        console.error("Failed to fetch clients:", errorData); // לוג שגיאה
-        alert(
-          `Error fetching clients: ${errorData.message || "Unknown error."}`
-        );
+        alert("Failed to fetch clients. Please try again.");
       }
     } catch (error) {
-      console.error("Error fetching clients:", error); // לוג כללי
+      console.error("Error fetching clients:", error);
       alert("An unexpected error occurred while fetching clients.");
     }
   };
 
   useEffect(() => {
     if (showClients) {
-      fetchClients(); // Fetch clients when toggling client list visibility
+      fetchClients();
     }
   }, [showClients]);
 
