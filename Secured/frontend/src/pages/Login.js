@@ -30,7 +30,13 @@ function Login() {
         alert(data.message);
         navigate("/system"); // מעבר למסך System אם ההתחברות הצליחה
       } else {
-        alert(data.message); // הצגת הודעת שגיאה משרת ה-Backend
+        // Display the error message which includes the remaining attempts
+        alert(data.message);
+        
+        // If the account is locked (403 status)
+        if (response.status === 403) {
+          alert("Your account is locked due to too many failed attempts. Please use the 'Forgot Password' option to reset your password.");
+        }
       }
     } catch (error) {
       console.error("Error during login:", error);

@@ -254,16 +254,23 @@ def register_user(username: str, password: str, email: str, db: Session) -> JSON
 def check_login(username: str, password: str, db: Session) -> bool:
     user = db.query(User).filter_by(username=username).first()
     if not user:
+        # Initialize attempts for non-existent user
+        if username not in login_attempts:
+            login_attempts[username] = 0
+        login_attempts[username] += 1
         return False
 
+    # Initialize attempts for existing user if not already set
     if username not in login_attempts:
         login_attempts[username] = 0
 
     hashed_input = hash_password(password)
     if hashed_input == user.password:
+        # Reset attempts on successful login
         login_attempts[username] = 0
         return True
 
+    # Increment failed attempts
     login_attempts[username] += 1
     return False
 
