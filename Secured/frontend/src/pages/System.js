@@ -53,30 +53,25 @@ function System() {
       const response = await fetch(
         `http://localhost:5000/get_user_clients?user_id=${userId}`
       );
-      console.log("Response status:", response.status); // בדיקת סטטוס התגובה
+      console.log("Response status:", response.status);
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Fetched clients data (raw):", data); // לוג של התגובה
-        if (data.client && Array.isArray(data.client)) {
-          console.log("Setting clients (client key):", data.client);
-          setClients(data.client); // שימוש במפתח "client"
-        } else if (Array.isArray(data)) {
-          console.log("Setting clients (array response):", data);
-          setClients(data); // אם התגובה היא מערך ישיר
+        console.log("Fetched clients data (raw):", data);
+        if (data.clients && Array.isArray(data.clients)) {
+          console.log("Setting clients:", data.clients);
+          setClients(data.clients);
         } else {
           console.error("Unexpected data format:", data);
           alert("Unexpected data format received from the server.");
         }
       } else {
         const errorData = await response.json();
-        console.error("Failed to fetch clients:", errorData); // לוג שגיאה
-        alert(
-          `Error fetching clients: ${errorData.message || "Unknown error."}`
-        );
+        console.error("Failed to fetch clients:", errorData);
+        alert(`Error fetching clients: ${errorData.message || "Unknown error."}`);
       }
     } catch (error) {
-      console.error("Error fetching clients:", error); // לוג כללי
+      console.error("Error fetching clients:", error);
       alert("An unexpected error occurred while fetching clients.");
     }
   };
